@@ -116,7 +116,7 @@ A classificação usa um **léxico** (lista de palavras positivas e negativas em
 
 1. O texto é colocado em minúsculas e sem acentos.
 2. Cada palavra positiva soma +1 e cada negativa soma −1.
-3. Uma negação logo antes da palavra inverte o sinal (por exemplo, "não gostei" conta como negativo).
+3. Uma negação até duas palavras antes inverte o sinal (por exemplo, "não gostei" e "não é bom" contam como negativo). A busca para se houver outra palavra de sentimento no meio.
 4. Pontuação final maior que 0 é **positivo**, menor que 0 é **negativo** e igual a 0 é **neutro**.
 
 Toda essa lógica está isolada em `server/app/sentimento.py`, então é possível trocá-la por um modelo de IA (como um modelo de `transformers`) sem alterar as rotas.
