@@ -13,6 +13,8 @@ POSITIVAS = {
     "rapida", "eficiente", "legal", "incrivel", "satisfeito", "satisfeita",
     "feliz", "agradavel", "barato", "qualidade", "top", "show", "nota10",
     "atencioso", "atenciosa", "confiavel", "facil", "lindo", "linda",
+    "gentil", "pontual", "organizado", "organizada", "fantastico", "fantastica",
+    "maravilha", "bonito", "bonita", "tranquilo", "tranquila",
 }
 
 NEGATIVAS = {
@@ -22,9 +24,16 @@ NEGATIVAS = {
     "problema", "problemas", "fraco", "fraca", "falso", "falsa", "golpe",
     "lixo", "insatisfeito", "insatisfeita", "arrependido", "arrependida",
     "dificil", "sujo", "suja", "grosso", "grossa", "enganoso", "enganosa",
+    "pior", "atrasou", "atrasado", "atrasada", "errado", "errada",
+    "estragado", "estragada", "descaso", "vergonha",
 }
 
 NEGACOES = {"nao", "nunca", "jamais", "nem", "sem"}
+
+# Quantas palavras antes de uma palavra de sentimento a negação ainda vale
+# ("não é bom", "não achei bom"). A busca para se aparecer outra palavra de
+# sentimento no caminho, para "não gostei, bom preço" não inverter o "bom".
+JANELA_NEGACAO = 2
 
 
 def normalizar(texto: str) -> str:
@@ -37,10 +46,21 @@ def tokenizar(texto: str) -> list:
     return re.findall(r"[a-z0-9]+", normalizar(texto))
 
 
+def tem_negacao(palavras: list, i: int) -> bool:
+    """Há uma negação nas até JANELA_NEGACAO palavras antes da posição i?"""
+    for j in range(i - 1, max(i - 1 - JANELA_NEGACAO, -1), -1):
+        if palavras[j] in NEGACOES:
+            return True
+        if palavras[j] in POSITIVAS or palavras[j] in NEGATIVAS:
+            return False
+    return False
+
+
 def analisar_texto(texto: str) -> dict:
     """Devolve {'sentimento', 'pontuacao', 'confianca', 'palavras_chave'}.
 
-    Uma negação logo antes da palavra inverte o sinal ("não gostei" -> negativo).
+    Uma negação logo antes da palavra inverte o sinal ("não gostei" -> negativo),
+    mesmo com até uma palavra no meio ("não é bom" -> negativo).
     """
     palavras = tokenizar(texto)
     pontuacao = 0
@@ -52,7 +72,7 @@ def analisar_texto(texto: str) -> dict:
             valor = -1
         else:
             continue
-        if i > 0 and palavras[i - 1] in NEGACOES:
+        if tem_negacao(palavras, i):
             valor = -valor
         pontuacao += valor
         chaves.append(palavra)
