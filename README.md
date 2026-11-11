@@ -20,15 +20,13 @@ meu_projeto_api/
 ├── requirements.txt          # dependências Python
 │
 ├── server/                   # Servidor da API (backend)
-│   ├── app/
-│   │   ├── __init__.py
-│   │   ├── main.py           # rotas da API (FastAPI)
-│   │   └── sentimento.py     # lógica de análise de sentimento
-│   └── .env.example          # variáveis de ambiente do servidor
+│   └── app/
+│       ├── __init__.py
+│       ├── main.py           # rotas da API (FastAPI)
+│       └── sentimento.py     # lógica de análise de sentimento
 │
 └── client/                   # Cliente que consome a API
-    ├── main.py               # menu interativo e demonstração
-    └── .env.example          # variáveis de ambiente do cliente
+    └── main.py               # menu interativo e demonstração
 ```
 
 ## Como executar
