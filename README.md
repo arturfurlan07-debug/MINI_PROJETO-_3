@@ -123,7 +123,7 @@ Toda essa lógica está isolada em `server/app/sentimento.py`, então é possív
 
 ## Variáveis de ambiente (opcionais)
 
-Os arquivos `.env.example` mostram quais variáveis existem. O código lê as variáveis direto do ambiente (não carrega arquivo `.env`), então defina antes de rodar, por exemplo:
+O código lê estas variáveis direto do ambiente. Todas são opcionais e têm valor padrão, então só defina se quiser mudar. Exemplo:
 
 ```bash
 export LOJA_NOME="Loja do NARGAS"
